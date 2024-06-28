@@ -23,6 +23,7 @@ import {
   Input,
   Stack,
   Heading,
+  Skeleton,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -156,52 +157,69 @@ const Classification = () => {
             onClick={onOpen}
           />
         </Flex>
-
-        <Wrap>
-          {classifications.length !== 0 &&
-            classifications.map((item, index) => (
+        
+        {loading ? (
+          // Show skeletons when loading
+          <Wrap>
+            {[...Array(4)].map((_, index) => (
               <WrapItem key={index}>
-                <Box
-                  maxW={'270px'}
-                  w={'full'}
-                  bg={'gray.800'}
-                  boxShadow={'2xl'}
-                  rounded={'md'}
-                  overflow={'hidden'}
-                >
-                  <Box p={6}>
-                    <Stack spacing={0} align={'center'} mb={5}>
-                      <Heading
-                        fontSize={'2xl'}
-                        fontWeight={500}
-                        fontFamily={'body'}
-                      >
-                        {item.title}
-                      </Heading>
-                    </Stack>
-
-                    <Button
-                      size="sm"
-                      w={'full'}
-                      mt={2}
-                      bg="#FB493F"
-                      color={'white'}
-                      rounded={'md'}
-                      _hover={{
-                        transform: 'translateY(-2px)',
-                        boxShadow: 'lg',
-                      }}
-                      onClick={() => handleDeleteClassification(item._id)}
-                      isLoading={loading}
-                      loadingText="Deleting"
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </Box>
+                <Skeleton
+                  height="165.8px"
+                  width="174.8px"
+                  my={4}
+                  rounded={'lg'}
+                  shadow={'xl'}
+                />
               </WrapItem>
             ))}
-        </Wrap>
+          </Wrap>
+        ) : (
+          <Wrap>
+            {classifications.length !== 0 &&
+              classifications.map((item, index) => (
+                <WrapItem key={index}>
+                  <Box
+                    maxW={'270px'}
+                    w={'full'}
+                    bg={'gray.800'}
+                    boxShadow={'2xl'}
+                    rounded={'md'}
+                    overflow={'hidden'}
+                  >
+                    <Box p={6}>
+                      <Stack spacing={0} align={'center'} mb={5}>
+                        <Heading
+                          fontSize={'2xl'}
+                          fontWeight={500}
+                          fontFamily={'body'}
+                        >
+                          {item.title}
+                        </Heading>
+                      </Stack>
+
+                      <Button
+                        size="sm"
+                        w={'full'}
+                        mt={2}
+                        bg="#FB493F"
+                        color={'white'}
+                        rounded={'md'}
+                        _hover={{
+                          transform: 'translateY(-2px)',
+                          boxShadow: 'lg',
+                        }}
+                        onClick={() => handleDeleteClassification(item._id)}
+                        isLoading={loading}
+                        loadingText="Deleting"
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </Box>
+                </WrapItem>
+              ))}
+          </Wrap>
+        )}
       </Box>
     </>
   );

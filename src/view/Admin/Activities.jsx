@@ -23,6 +23,7 @@ import {
   useColorModeValue,
   Stack,
   Heading,
+  Skeleton,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
@@ -53,6 +54,7 @@ const Activities = () => {
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -127,7 +129,6 @@ const Activities = () => {
 
           <ModalFooter>
             <Button
-
               mt={10}
               mr={2}
               bg="#1EE66E"
@@ -182,72 +183,89 @@ const Activities = () => {
           />
         </Flex>
 
-        {activityList.length !== 0 && (
+        {loading ? (
+          // Show skeletons when loading
           <Wrap>
-            {activityList.map((item, index) => (
+            {[...Array(4)].map((_, index) => (
               <WrapItem key={index}>
-                <Box
-                  maxW={'270px'}
-                  w={'full'}
-                  boxShadow={'2xl'}
-                  rounded={'md'}
-                  overflow={'hidden'}
-                >
-                  <Box p={6}>
-                    <Stack spacing={0} align={'center'} mb={5}>
-                      <Heading
-                        fontSize={'2xl'}
-                        fontWeight={500}
-                        fontFamily={'body'}
-                      >
-                        {item.title}
-                      </Heading>
-                    </Stack>
-
-                    <Stack direction={'row'} justify={'center'} spacing={6}>
-                      <Stack spacing={0} align={'center'}>
-                        <Text fontSize={'sm'} color={'gray.500'}>
-                          Endpoint : {item.endpoint}
-                        </Text>
-                      </Stack>
-                    </Stack>
-
-                    <Button
-                      size="sm"
-                      w={'full'}
-                      mt={8}
-                      bg={'#1EE66E'}
-                      color={'black'}
-                      rounded={'md'}
-                      _hover={{
-                        transform: 'translateY(-2px)',
-                        boxShadow: 'lg',
-                      }}
-                      onClick={() => handleActivitySelect(item._id)}
-                    >
-                      Select
-                    </Button>
-
-                    <Button
-                      size="sm"
-                      w={'full'}
-                      mt={2}
-                      bg="#FB493F"
-                      color={'white'}
-                      rounded={'md'}
-                      _hover={{
-                        transform: 'translateY(-2px)',
-                        boxShadow: 'lg',
-                      }}
-                      onClick={() => handleDeleteActivity(item._id)}
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </Box>
+                <Skeleton
+                  height="185.8px"
+                  width="174.8px"
+                  my={4}
+                  rounded={'lg'}
+                  shadow={'xl'}
+                />
               </WrapItem>
             ))}
           </Wrap>
+        ) : (
+          activityList.length !== 0 && (
+            <Wrap>
+              {activityList.map((item, index) => (
+                <WrapItem key={index}>
+                  <Box
+                    maxW={'270px'}
+                    w={'full'}
+                    boxShadow={'2xl'}
+                    rounded={'md'}
+                    overflow={'hidden'}
+                  >
+                    <Box p={6}>
+                      <Stack spacing={0} align={'center'} mb={5}>
+                        <Heading
+                          fontSize={'2xl'}
+                          fontWeight={500}
+                          fontFamily={'body'}
+                        >
+                          {item.title}
+                        </Heading>
+                      </Stack>
+
+                      <Stack direction={'row'} justify={'center'} spacing={6}>
+                        <Stack spacing={0} align={'center'}>
+                          <Text fontSize={'sm'} color={'gray.500'}>
+                            Endpoint : {item.endpoint}
+                          </Text>
+                        </Stack>
+                      </Stack>
+
+                      <Button
+                        size="sm"
+                        w={'full'}
+                        mt={8}
+                        bg={'#1EE66E'}
+                        color={'black'}
+                        rounded={'md'}
+                        _hover={{
+                          transform: 'translateY(-2px)',
+                          boxShadow: 'lg',
+                        }}
+                        onClick={() => handleActivitySelect(item._id)}
+                      >
+                        Select
+                      </Button>
+
+                      <Button
+                        size="sm"
+                        w={'full'}
+                        mt={2}
+                        bg="#FB493F"
+                        color={'white'}
+                        rounded={'md'}
+                        _hover={{
+                          transform: 'translateY(-2px)',
+                          boxShadow: 'lg',
+                        }}
+                        onClick={() => handleDeleteActivity(item._id)}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                  </Box>
+                </WrapItem>
+              ))}
+            </Wrap>
+          )
         )}
       </Box>
     </>

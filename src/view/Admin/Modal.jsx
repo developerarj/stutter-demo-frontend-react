@@ -21,6 +21,7 @@ import {
   FormHelperText,
   Input,
   Checkbox,
+  Skeleton,
 } from '@chakra-ui/react';
 import ModalCard from '../../components/ModalCard';
 import { getModals, addModal } from '../../services/Admin';
@@ -34,8 +35,6 @@ const MlModal = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [type, setType] = useState('');
-  const [accuracy, setAccuracy] = useState('');
-  const [version, setVersion] = useState('');
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
 
@@ -45,14 +44,14 @@ const MlModal = () => {
         const response = await getModals();
 
         if (response && response.data) {
-          setModals(response.data.modals); // Assuming the API returns data in the form of an array of audio files
+          setModals(response.data.modals); // Assuming the API returns data in the form of an array of modals
           setLoading(false);
         } else {
-          setError('Failed to fetch modals files');
+          setError('Failed to fetch modals');
           setLoading(false);
         }
       } catch (error) {
-        setError('An error occurred while fetching modal files');
+        setError('An error occurred while fetching modals');
         setLoading(false);
       }
     };
@@ -65,15 +64,15 @@ const MlModal = () => {
   };
 
   const handleAddModal = async () => {
-    if (type && accuracy && version) {
+    if (type) {
       try {
-        const response = await addModal(type, accuracy, version, isActive);
+        const response = await addModal(type, isActive);
 
         if (response.status === 201) {
           navigate(`/admin/modals/${response.data.id}`);
         }
       } catch (error) {
-        setError('An error occurred while fetching modal files');
+        setError('An error occurred while adding the modal');
         setLoading(false);
       }
     }
@@ -93,24 +92,6 @@ const MlModal = () => {
               <FormHelperText>Enter the type of the model.</FormHelperText>
             </FormControl>
 
-            <FormControl isRequired mt={4}>
-              <FormLabel>Accuracy</FormLabel>
-              <Input
-                value={accuracy}
-                onChange={e => setAccuracy(e.target.value)}
-              />
-              <FormHelperText>Enter the accuracy of the model.</FormHelperText>
-            </FormControl>
-
-            <FormControl isRequired mt={4}>
-              <FormLabel>Version</FormLabel>
-              <Input
-                value={version}
-                onChange={e => setVersion(e.target.value)}
-              />
-              <FormHelperText>Enter the version of the model.</FormHelperText>
-            </FormControl>
-
             <FormControl display="flex" alignItems="center" mt={4}>
               <FormLabel mb="0">Active</FormLabel>
               <Checkbox
@@ -124,7 +105,6 @@ const MlModal = () => {
 
           <ModalFooter>
             <Button
-              // isLoading={isSubmit}
               mt={10}
               mr={2}
               bg="#1EE66E"
@@ -143,7 +123,6 @@ const MlModal = () => {
             </Button>
 
             <Button
-              // isLoading={isSubmit}
               mt={10}
               ml={2}
               bg="#FB493F"
@@ -180,8 +159,24 @@ const MlModal = () => {
           />
         </Flex>
 
-        {modals.length !== 0 && (
+        {loading ? (
+          // Show skeletons when loading
           <Wrap>
+            {[...Array(4)].map((_, index) => (
+              <WrapItem key={index}>
+                <Skeleton
+                  height="185.8px"
+                  width="174.8px"
+                  my={4}
+                  rounded={'lg'}
+                  shadow={'xl'}
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
+        ) : (
+          // Render actual modals
+          <Wrap spacing="30px">
             {modals.map((modal, index) => (
               <WrapItem key={index}>
                 <ModalCard
