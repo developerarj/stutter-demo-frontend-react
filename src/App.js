@@ -30,6 +30,8 @@ import './Global.css';
 import Classification from './view/Admin/Classification';
 import AudioFiles from './view/Admin/AudioFiles';
 import AdminPrediction from './view/Admin/AdminPrediction';
+import QnA from './view/User/QnA';
+
 const theme = extendTheme({
   styles: {
     global: props => ({
@@ -196,7 +198,6 @@ function App() {
             }
           />
 
-        
           <Route
             path="/admin/feedback/:id"
             element={
@@ -331,7 +332,8 @@ function App() {
               <PrivateRoute
                 element={
                   <UserSideBar>
-                    <SimpleDialog />
+                    <QnA />
+                    {/* <SimpleDialog/> */}
                   </UserSideBar>
                 }
                 path={`/user/activity/simple-dialog/:id`}

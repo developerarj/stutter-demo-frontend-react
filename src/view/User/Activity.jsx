@@ -96,8 +96,6 @@ const Activity = () => {
     fetchActivitySession();
   }, []);
 
- 
-
   return (
     <Box p={4}>
       <Flex>
@@ -183,7 +181,7 @@ const Activity = () => {
                         cursor="pointer"
                         onClick={e =>
                           handleNavigateUrl(
-                            `${item.endpoint}/${item._id}?option=${th._id}`
+                            `/user${item.endpoint}/${item._id}?option=${th._id}`
                           )
                         }
                       >

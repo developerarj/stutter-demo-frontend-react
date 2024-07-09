@@ -368,3 +368,60 @@ export const getSessionPrediction = async session_id => {
     return false;
   }
 };
+
+
+export const getQuestions = async (activity_id) => {
+  try {
+    const token = Cookies.get('token'); // Get token from cookie
+
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    console.log('Token:', token); // Debugging log for token
+    console.log('API Endpoint:', `${apiUrl}common/utterance/generateQuestions/${activity_id}`); // Debugging log for endpoint
+    console.log('Theme ID:',activity_id)
+
+    const response = await axios.get(
+      `${apiUrl}common/utterance/generateQuestions/${activity_id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include token as Bearer token in the header
+        },
+      }
+    );
+
+    console.log('Response:', response); // Debugging log for response
+    return response; // Assuming the response data contains the questions
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    return false;
+  }
+};
+
+
+// export const getQuestions = async theme_id => {
+//   try {
+//     const token = Cookies.get('token'); // Get token from cookie
+
+//     if (!token) {
+//       throw new Error('Token not found');
+//     }
+
+//     const response = await axios.get(
+//       `${apiUrl}common/utterance/generateQuestions/${theme_id}`,
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${token}`, // Include token as Bearer token in the header
+//         },
+//       }
+//     );
+
+//     return response; // Assuming the response data contains the questions
+//   } catch (error) {
+//     console.error('Error fetching questions:', error);
+//     return false;
+//   }
+// };

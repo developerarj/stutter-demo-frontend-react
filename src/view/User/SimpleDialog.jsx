@@ -6,6 +6,7 @@ import {
   getActivitySession,
   addActivitySession,
   getDialogue,
+  getQuestions,
 } from '../../services/Common';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
@@ -26,7 +27,6 @@ const SimpleDialog = () => {
   const fetchUser = async () => {
     try {
       const res = await userDetails();
-
       if (res.status === 200) {
         setUser(res.data);
       }
@@ -38,7 +38,6 @@ const SimpleDialog = () => {
   const fetchActivitySession = async () => {
     try {
       const res = await getActivitySession(id);
-
       if (res.status === 200) {
         setActivitySessionList(res.data.activities);
       }
@@ -52,7 +51,6 @@ const SimpleDialog = () => {
     const optionValue = searchParams.get('option');
     try {
       const res = await addActivitySession(id, optionValue);
-
       if (res.status === 200) {
         setSession(res.data);
       }
@@ -73,7 +71,7 @@ const SimpleDialog = () => {
     },
   };
 
-  const convertApiResponseToDialogue = dialogue => {
+  const convertApiResponseToDialogue = dialogue => { //Function to format string
     const dialogues = dialogue
       .split('\n\n')
       .filter(line => line.includes(':'))
@@ -84,7 +82,7 @@ const SimpleDialog = () => {
           text: text.trim(),
         };
       });
-
+    console.log("Dialogues:",dialogues);
     return dialogues;
   };
 
@@ -101,13 +99,11 @@ const SimpleDialog = () => {
     try {
       const searchParams = new URLSearchParams(location.search);
       const optionValue = searchParams.get('option');
-
       const res = await getDialogue(optionValue);
       if (res.status === 200) {
         const convertedDialogue = await convertApiResponseToDialogue(
           res.data.feedback
         );
-
         setDialogue(convertedDialogue);
       }
     } catch (error) {
@@ -145,30 +141,7 @@ const SimpleDialog = () => {
         sx={customScrollbarStyle}
         display="flex"
         onWheel={handleScroll}
-      >
-        {/* {activitySessions.length !== 0 &&
-          [...activitySessions].reverse().map((item, index) => (
-            <Box
-              key={index}
-              border="1px solid"
-              borderColor="#165D37"
-              p={4}
-              rounded="sm"
-              cursor="pointer"
-              mr={4}
-              onClick={() => handleSessionResult(item._id)}
-              minW="200px"
-              flexShrink={0}
-            >
-              <Text fontSize="sm" p={2}>
-                Theme: {item?.theme?.theme}
-              </Text>
-              <Text fontSize="sm" p={2}>
-                Created: {item.createdDate}
-              </Text>
-            </Box>
-          ))} */}
-      </Box>
+      ></Box>
 
       {dialogue && user && (
         <SimpleDialogComponent
