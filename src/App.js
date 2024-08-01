@@ -31,6 +31,7 @@ import Classification from './view/Admin/Classification';
 import AudioFiles from './view/Admin/AudioFiles';
 import AdminPrediction from './view/Admin/AdminPrediction';
 import QnA from './view/User/QnA';
+import Results from './view/User/Results';
 
 const theme = extendTheme({
   styles: {
@@ -112,7 +113,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="/admin/modals"
             element={
@@ -197,7 +197,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="/admin/feedback/:id"
             element={
@@ -240,7 +239,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="/home"
             element={
@@ -351,6 +349,20 @@ function App() {
                   </UserSideBar>
                 }
                 path={`/user/activity/simple-dialog/:id/:seesionId`}
+                adminOnly={false}
+              />
+            }
+          />
+          <Route
+            path={'user/results'}
+            element={
+              <PrivateRoute
+                element={
+                  <UserSideBar>
+                    <Results />
+                  </UserSideBar>
+                }
+                path={'/user/results'}
                 adminOnly={false}
               />
             }

@@ -17,7 +17,7 @@ const QuestionDisplay = ({
       setLoading(false);
     }, 1000);
 
-    return () => clearTimeout(timer); // Clean up timer on component unmount
+    return () => clearTimeout(timer); 
   }, []);
 
   if (!currentDialogue || !currentDialogue.text) {
